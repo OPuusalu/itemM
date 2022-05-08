@@ -5,3 +5,10 @@ class Items:
         self.name = name
         self.farmability = farmability
         self.incredients = incredients
+        
+    
+    def print_item(self):
+        return self.ID, self.name, self.farmability, self.incredients
+
+    def return_incredients(self):
+        return self.incredients
