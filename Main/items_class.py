@@ -1,14 +1,13 @@
 class Items:
 
-    def __init__(self, ID, name, farmability, incredients):
-        self.ID = ID
+    def __init__(self, name, farmability, ingredients):
         self.name = name
         self.farmability = farmability
-        self.incredients = incredients
+        self.ingredients = ingredients
         
     
     def print_item(self):
-        return self.ID, self.name, self.farmability, self.incredients
+        return self.name, self.farmability, self.ingredients
 
-    def return_incredients(self):
-        return self.incredients
+    def ingredients_list(self):
+        return self.ingredients
