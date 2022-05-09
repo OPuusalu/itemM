@@ -11,8 +11,7 @@ def getRecipies(item):
     toDo.append(item)
 
     while not toDo == []:
-        toDo.remove(item)
-        item1, item2 = searchIngcredients(items.get(item))
+        item1, item2 = searchIngredients(items.get(item))
         item1, item2 = items.get(item1).name, items.get(item2).name
 
         toDo.append(item1)
@@ -22,21 +21,20 @@ def getRecipies(item):
         recipies.append(recipie)
         print(recipies)
 
-        if searchIngcredients(items.get(item1)) == None:
+        if searchIngredients(items.get(item1)) == None:
             toDo.remove(item1)
 
-        if searchIngcredients(items.get(item2)) == None:
+        if searchIngredients(items.get(item2)) == None:
             toDo.remove(item2)
         
         item = toDo[0]
-        print(toDo)
-        print(recipies)
+        toDo.remove(item)
 
     
     return recipies
 
 
-def searchIngcredients(item):
+def searchIngredients(item):
 
     # Opens pickle and gets the ingredients from it
     items = pickle.load(open('main_items.p', 'rb'))
@@ -56,7 +54,7 @@ def searchItems(item):
 
     try:
 
-        return searchIgcredients(item)
+        return searchIngredients(item)
 
     except:
         # Todo: add error message if try fails for other reason that 'Item not found'
