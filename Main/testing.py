@@ -3,6 +3,6 @@ import items_class
 import changePickle
 
 
-Wooden_Platform = items_class.Items('Wooden Platform', 1, ['Wood Block', 'Grass'])
+#Wooden_Platform = items_class.Items('Wooden Platform', 1, ['Wood Block', 'Grass'])
 
-changePickle.Item.addToPickle(Wooden_Platform)
+#changePickle.Item.addToPickle(Wooden_Platform)
