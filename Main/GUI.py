@@ -3,19 +3,19 @@ import easygui
 
 items = pickle.load(open('main_items.p', 'rb'))
 
-def searchIncredients(item):
+def searchIgcredients(item):
 
-    # Opens pickle and gets the incredients from it
+    # Opens pickle and gets the ingredients from it
     items = pickle.load(open('main_items.p', 'rb'))
 
     ingredients = item.ingredients_list()
 
     if ingredients != [None]:
-        # Searches for the incredients in the pickle
+        # Searches for the ingredients in the pickle
         Item1 = items.get(ingredients[0])
         Item2 = items.get(ingredients[1])
     else:
-        return 'No incredients'
+        return 'No ingredients'
 
     return Item1.name, Item2.name
 
@@ -23,7 +23,7 @@ def searchItems(item):
 
     try:
 
-        return searchIncredients(item)
+        return searchIgcredients(item)
 
     except:
         # Todo: add error message if try fails for other reason that 'Item not found'
@@ -37,19 +37,25 @@ def main(GUI_Running):
         fieldValues = []
         fieldValues = easygui.multenterbox(msg,title, fieldNames)
 
+        item = fieldValues[0].title()
+
         if fieldValues == None:
             GUI_Running = False
 
-        if fieldValues[0] in items:
-            item = fieldValues[0]
-            item1, item2 = searchItems(items.get(item))
+        if item in items:
+            try:
+                item1, item2 = searchItems(items.get(item))
+                msg = 'Item {} found'.format(item) + '\n' + 'The recipe is: {} and {}'.format(items.get(item1).name, items.get(item2).name)
+            except:
+                msg = 'Item found' + '\n' + 'There are no ingredients since in a basic item'
+
             GUI_Running = False
-            msg = 'Item found' + '\n' + 'the recipe is: ' + items.get(item1).name + ' and ' + items.get(item2).name
+            
             title = item
             easygui.msgbox(msg, title)
         
         else:
-            msg = 'Item not found'
+            msg = 'Item {} not found'.format(item)
             title = 'Error'
             easygui.msgbox(msg, title)
 
