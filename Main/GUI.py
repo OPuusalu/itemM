@@ -12,12 +12,11 @@ def getRecipies(item, amount):
     toDo.append(item)
     item_added = False
 
-    while not toDo == []:
-        print(toDo)
+    if searchIngredients(items.get(item)) != None:
         item1, item2 = searchIngredients(items.get(item))
         item1, item2 = items.get(item1).name, items.get(item2).name
 
-        # Check if farmability of item is 0
+    # Check if farmability of item is 0
         if items.get(item).farmability == 0:
             blocks = (amount * 2.5) + (amount * 2.5)/12
             harvested_seeds = (amount * 4) / items.get(item).rarity + 12
@@ -33,7 +32,7 @@ def getRecipies(item, amount):
             amount1, amount2 = round((amount*100)/round(total_seeds)), round((amount*100)/round(total_seeds))
         else:
             print('Error')
-        
+
         amounts.append(amount1)
         amounts.append(amount2)
         toDo.append(item1)
@@ -48,10 +47,11 @@ def getRecipies(item, amount):
         recipie = '{} ({}) = {} ({}) and {} ({})\n'.format(item, amount, item1, amount1, item2, amount2)
         recipies.append(recipie)
 
-        amount = amounts[0]
-        item = toDo[0]
-        toDo = toDo[1:]
-    return recipies
+
+        return recipies + getRecipies(item1, amount1) + getRecipies(item2, amount2)
+
+    else:
+        return []
 
 
 def searchIngredients(item):
