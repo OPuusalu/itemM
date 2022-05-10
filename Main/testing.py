@@ -2,9 +2,11 @@ import pickle
 import items_class
 import changePickle
 
+'''
+item = items_class.Items('Grass', 1, ['Rock','Dirt'], 2)
 
-#Wooden_Platform = items_class.Items('Wooden Platform', 1, ['Wood Block', 'Grass'])
-
-#changePickle.Item.addToPickle(Wooden_Platform)
-
+changePickle.Item.addToPickle(item)
+'''
+#print items in pickle
 changePickle.Item.printItems()
+

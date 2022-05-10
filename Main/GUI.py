@@ -10,17 +10,27 @@ def getRecipies(item, amount):
     recipies = []
     amounts = []
     toDo.append(item)
+    item_added = False
 
     while not toDo == []:
+        print(toDo)
         item1, item2 = searchIngredients(items.get(item))
         item1, item2 = items.get(item1).name, items.get(item2).name
 
         # Check if farmability of item is 0
         if items.get(item).farmability == 0:
-            amount1, amount2 = amount*1.2, amount*1.2
+            blocks = (amount * 2.5) + (amount * 2.5)/12
+            harvested_seeds = (amount * 4) / items.get(item).rarity + 12
+            total_seeds = harvested_seeds + blocks / 4
+            amount1, amount2 = round((amount*100)/round(total_seeds)), round((amount*100)/round(total_seeds))
+
+
         # Check if farmability of item is 1
         elif items.get(item).farmability == 1:
-            amount1, amount2 = amount*0.8, amount*0.8
+            blocks = (amount * 3.75) + (amount * 3.75)/12
+            harvested_seeds = (amount * 4) / (items.get(item).rarity + 12)
+            total_seeds = harvested_seeds + blocks / 4
+            amount1, amount2 = round((amount*100)/round(total_seeds)), round((amount*100)/round(total_seeds))
         else:
             print('Error')
         
@@ -28,20 +38,19 @@ def getRecipies(item, amount):
         amounts.append(amount2)
         toDo.append(item1)
         toDo.append(item2)
-        
-        recipie = '{} ({}) = {} ({}) and {} ({})\n'.format(item, amount, item1, amount1, item2, amount2)
-        recipies.append(recipie)
 
         if searchIngredients(items.get(item1)) == None:
             toDo.remove(item1)
 
         if searchIngredients(items.get(item2)) == None:
             toDo.remove(item2)
-        
+
+        recipie = '{} ({}) = {} ({}) and {} ({})\n'.format(item, amount, item1, amount1, item2, amount2)
+        recipies.append(recipie)
+
         amount = amounts[0]
         item = toDo[0]
-        toDo.remove(item)
-
+        toDo = toDo[1:]
     return recipies
 
 
@@ -93,18 +102,17 @@ def main(GUI_Running):
 
         # Search for the item
         if item in items:
-            
-            try:
-                recipies = getRecipies(item, amount)
-                # Print the recipies
-                msg = recipies
 
-            except:
-                msg = 'Item is basic item'
+            recipies = getRecipies(item, amount)
+            if recipies == None:
+                print('Basic item')
+            else:
+                print(recipies)
+                msg = recipies
             
             title = item
             easygui.msgbox(msg, title)
-            
+
         # If the item is not in the pickle or the user inputs an invalid item
         else:
             msg = 'Item {} not found'.format(item)
