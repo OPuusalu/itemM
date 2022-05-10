@@ -4,22 +4,33 @@ import sys
 
 items = pickle.load(open('main_items.p', 'rb'))
 
-def getRecipies(item):
+def getRecipies(item, amount):
     items = pickle.load(open('main_items.p', 'rb'))
     toDo = []
     recipies = []
+    amounts = []
     toDo.append(item)
 
     while not toDo == []:
         item1, item2 = searchIngredients(items.get(item))
         item1, item2 = items.get(item1).name, items.get(item2).name
 
+        # Check if farmability of item is 0
+        if items.get(item).farmability == 0:
+            amount1, amount2 = amount*1.2, amount*1.2
+        # Check if farmability of item is 1
+        elif items.get(item).farmability == 1:
+            amount1, amount2 = amount*0.8, amount*0.8
+        else:
+            print('Error')
+        
+        amounts.append(amount1)
+        amounts.append(amount2)
         toDo.append(item1)
         toDo.append(item2)
         
-        recipie = '{} = {} and {} \n'.format(item, item1, item2)
+        recipie = '{} ({}) = {} ({}) and {} ({})\n'.format(item, amount, item1, amount1, item2, amount2)
         recipies.append(recipie)
-        print(recipies)
 
         if searchIngredients(items.get(item1)) == None:
             toDo.remove(item1)
@@ -27,10 +38,10 @@ def getRecipies(item):
         if searchIngredients(items.get(item2)) == None:
             toDo.remove(item2)
         
+        amount = amounts[0]
         item = toDo[0]
         toDo.remove(item)
 
-    
     return recipies
 
 
@@ -66,7 +77,7 @@ def main(GUI_Running):
         # Opens the GUI
         msg = 'Input item name'
         title = 'Search'
-        fieldNames = ['Item name']
+        fieldNames = ['Item name', 'Amount']
         fieldValues = []
         fieldValues = easygui.multenterbox(msg,title, fieldNames)
 
@@ -77,21 +88,23 @@ def main(GUI_Running):
 
         # Get the item name and amount from fieldValues
         item = fieldValues[0].title()
+        amount = int(fieldValues[1])
         #baseAmount = int(fieldValues[1])
 
         # Search for the item
         if item in items:
+            
             try:
-                # Get the recipies
-                recipies = getRecipies(item)
+                recipies = getRecipies(item, amount)
                 # Print the recipies
                 msg = recipies
 
             except:
-                msg = 'Item found' + '\n' + 'There are no ingredients since in a basic item'
+                msg = 'Item is basic item'
             
             title = item
             easygui.msgbox(msg, title)
+            
         # If the item is not in the pickle or the user inputs an invalid item
         else:
             msg = 'Item {} not found'.format(item)

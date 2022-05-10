@@ -26,4 +26,29 @@ class Item:
 
         except:
             print('Pickle not found')
+    
+    def renameItem(item, newName):
+        # Opens the pickle if it exists else prints error
+        try:
+            items = pickle.load(open('main_items.p', 'rb'))
+
+            # Renames the item in the pickle
+            items[newName] = items.pop(item.name)
+
+            pickle.dump(items, open('main_items.p', 'wb'))
+
+        except:
+            print('Pickle not found')
+    
+    def printItems():
+        # Opens the pickle if it exists else prints error
+        try:
+            items = pickle.load(open('main_items.p', 'rb'))
+
+            # Prints all the items in the pickle
+            for item in items:
+                print(item, items[item].print_item())
+
+        except:
+            print('Pickle not found')
             
